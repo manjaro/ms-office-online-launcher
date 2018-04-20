@@ -1,4 +1,4 @@
-### MS-OFFICE-ONLINE - Launcher for Mircosoft Office Suite Online based on JAK
+### MS-OFFICE-ONLINE - Launcher for Microsoft Office Suite Online based on JAK
 ---------
 
 [![GitHub release](https://img.shields.io/github/release/manjaro/ms-office-online-launcher.svg)](https://github.com/manjaro/ms-office-online-launcher/releases)
