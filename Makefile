@@ -42,10 +42,10 @@ settings.json-skype: settings.json
 
 
 install: build
-	install -dm755 $(DESTDIR)$(PREFIX)/bin
+	install -Dm755 $(DESTDIR)$(PREFIX)/bin
 	install -Dm644 -t $(DESTDIR)$(PREFIX)/share/applications/ desktop-files/*.desktop
 	for app in $(APPS); do \
-	    install -Dm644 ms-office-online \
+	    install -Dm755 ms-office-online \
 	        $(DESTDIR)$(PREFIX)/share/ms-office/$$app/ms-office-online ; \
 	    install -Dm644 settings.json-$$app \
 	        $(DESTDIR)$(PREFIX)/share/ms-office/$$app/settings.json ; \
