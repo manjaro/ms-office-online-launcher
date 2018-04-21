@@ -43,7 +43,6 @@ settings.json-skype: settings.json
 
 install: build
 	install -dm755 $(DESTDIR)$(PREFIX)/bin
-	install -Dm644 -t $(DESTDIR)$(PREFIX)/share/applications/ desktop-files/*.desktop
 	for app in $(APPS); do \
 	    install -Dm755 ms-office-online \
 	        $(DESTDIR)$(PREFIX)/share/ms-office/$$app/ms-office-online ; \
@@ -52,6 +51,8 @@ install: build
 	    install -Dm644 icons/$$app.png \
 	        $(DESTDIR)$(PREFIX)/share/icons/hicolor/1024x1024/apps/ms-$$app.png ; \
 	    ln -sf $(PREFIX)/share/ms-office/$$app/ms-office-online $(DESTDIR)$(PREFIX)/bin/ms-$$app ; \
+	    install -Dm644 desktop-files/$$app.desktop \
+	        $(DESTDIR)$(PREFIX)/share/applications/ms-$$app.desktop ; \
 	done
 
 clean:
