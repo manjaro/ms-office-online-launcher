@@ -1,5 +1,5 @@
 PREFIX ?= /usr/local
-ICONDIR = $(PREFIX)/share/icons/hicolor/1024/apps
+ICONDIR = $(PREFIX)/share/icons/hicolor/1024x1024/apps
 APPS = office word excel onenote outlook powerpoint skype
 
 build: $(APPS)
