@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Icon=ms-@APPNAMELOWER@
+Type=Application
+Categories=Office;
+Exec=ms-@APPNAMELOWER@
+Name=Microsoft @APPNAME@ Online
+GenericName=@APPNAME@
+StartupNotify=true
