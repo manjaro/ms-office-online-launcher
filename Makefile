@@ -10,11 +10,11 @@ $(APPS):
 	sed -e "s|@APPNAMELOWER@|\L$@|" \
 	    -e "s|@APPNAME@|\u$@|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
 	sed -e "s|@ICON@|$(ICONDIR)/ms-$@.png|" settings.json.in > $(BUILDDIR)/$@/settings.json
-	ifeq ($@, skype)
-	    sed -e "s|@CATEGORIES@|Network|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
-	else
-	    sed -e "s|@CATEGORIES@|Office|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
-	endif
+	if [[ "$@" == "skype" ]]; then \
+	    sed -e "s|@CATEGORIES@|Network|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop \
+	else \
+	    sed -e "s|@CATEGORIES@|Office|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop \
+	fi
 
 build: $(APPS)
 	sed -i "s|@URL@|https://www.office.com/login?es=Click\&ru=%2F|" $(BUILDDIR)/office/settings.json
