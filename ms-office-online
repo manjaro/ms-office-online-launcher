@@ -9,7 +9,6 @@ except Exception as err:
 import os, subprocess
 from gi.repository import Gtk, WebKit2
 
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 def same_frame():
     # open url in same window
