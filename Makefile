@@ -1,61 +1,41 @@
 PREFIX ?= /usr/local
-ICONDIR = $(PREFIX)/share/icons/hicolor/1024x1024/apps
+BUILDDIR = build
+ICONDIR = $(PREFIX)/share/icons
 APPS = office word excel onenote outlook powerpoint skype
 
+all: build
+
+$(APPS):
+	mkdir -p $(BUILDDIR)/$@
+	sed -e "s|@APPNAMELOWER@|\L$@|" \
+	    -e "s|@APPNAME@|\u$@|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
+	sed -e "s|@ICON@|$(ICONDIR)/ms-$@.png|" settings.json.in > $(BUILDDIR)/$@/settings.json
+
 build: $(APPS)
-$(APPS): $(addprefix settings.json-,$(APPS))
-
-settings.json-office: settings.json
-	sed -e "s|_icon_|$(ICONDIR)/ms-office.png|" \
-	    -e "s|_URL_|https://www.office.com/login?es=Click&ru=%2F|" \
-	    $< > $@
-
-settings.json-word: settings.json
-	sed -e "s|_icon_|$(ICONDIR)/ms-word.png|" \
-	    -e "s|_URL_|https://office.live.com/start/Word.aspx|" \
-	    $< > $@
-
-settings.json-excel: settings.json
-	sed -e "s|_icon_|$(ICONDIR)/ms-excel.png|" \
-	    -e "s|_URL_|https://office.live.com/start/Excel.aspx|" \
-	    $< > $@
-
-settings.json-onenote: settings.json
-	sed -e "s|_icon_|$(ICONDIR)/ms-onenote.png|" \
-	    -e "s|_URL_|https://www.onenote.com/notebooks|" \
-	    $< > $@
-
-settings.json-outlook: settings.json
-	sed -e "s|_icon_|$(ICONDIR)/ms-outlook.png|" \
-	    -e "s|_URL_|https://outlook.live.com/owa|" \
-	    $< > $@
-
-settings.json-powerpoint: settings.json
-	sed -e "s|_icon_|$(ICONDIR)/ms-powerpoint.png|" \
-	    -e "s|_URL_|https://office.live.com/start/PowerPoint.aspx|" \
-	    $< > $@
-
-settings.json-skype: settings.json
-	sed -e "s|_icon_|$(ICONDIR)/ms-skype.png|" \
-	    -e "s|_URL_|https://web.skype.com|" \
-	    $< > $@
-
+	sed -i "s|@URL@|https://www.office.com/login?es=Click\&ru=%2F|" $(BUILDDIR)/office/settings.json
+	sed -i "s|@URL@|https://office.live.com/start/Word.aspx|" $(BUILDDIR)/word/settings.json
+	sed -i "s|@URL@|https://office.live.com/start/Excel.aspx|" $(BUILDDIR)/excel/settings.json
+	sed -i "s|@URL@|https://www.onenote.com/notebooks|" $(BUILDDIR)/onenote/settings.json
+	sed -i "s|@URL@|https://outlook.live.com/owa|" $(BUILDDIR)/outlook/settings.json
+	sed -i "s|@URL@|https://office.live.com/start/PowerPoint.aspx|" $(BUILDDIR)/powerpoint/settings.json
+	sed -i "s|@URL@|https://web.skype.com|" $(BUILDDIR)/skype/settings.json
 
 install: build
-	install -dm755 $(DESTDIR)$(PREFIX)/bin
+	install -dm755 $(DESTDIR)$(PREFIX)/bin $(DESTDIR)$(PREFIX)/share/ms-office
 	for app in $(APPS); do \
-	    install -Dm755 ms-office-online \
-	        $(DESTDIR)$(PREFIX)/share/ms-office/$$app/ms-office-online ; \
-	    install -Dm644 settings.json-$$app \
-	        $(DESTDIR)$(PREFIX)/share/ms-office/$$app/settings.json ; \
-	    install -Dm644 icons/$$app.png \
-	        $(DESTDIR)$(PREFIX)/share/icons/hicolor/1024x1024/apps/ms-$$app.png ; \
-	    ln -sf $(PREFIX)/share/ms-office/$$app/ms-office-online $(DESTDIR)$(PREFIX)/bin/ms-$$app ; \
-	    install -Dm644 desktop-files/$$app.desktop \
-	        $(DESTDIR)$(PREFIX)/share/applications/ms-$$app.desktop ; \
+		install -Dm644 icons/$$app.png \
+			$(DESTDIR)$(ICONDIR)/ms-$$app.png ; \
+		install -Dm755 ms-office-online \
+			$(DESTDIR)$(PREFIX)/share/ms-office/$$app/ms-office-online ; \
+		ln -sf $(PREFIX)/share/ms-office/$$app/ms-office-online \
+			$(DESTDIR)$(PREFIX)/bin/ms-$$app ; \
+		install -Dm644 $(BUILDDIR)/$$app/settings.json \
+			$(DESTDIR)$(PREFIX)/share/ms-office/$$app/settings.json ; \
+		install -Dm644 $(BUILDDIR)/$$app/$$app.desktop \
+			$(DESTDIR)$(PREFIX)/share/applications/ms-$$app.desktop ; \
 	done
 
 clean:
-	rm -f settings.json-*
+	rm -fr $(BUILDDIR)
 
 .PHONY: build install clean $(APPS)
