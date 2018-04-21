@@ -10,7 +10,7 @@ $(APPS):
 	sed -e "s|@APPNAMELOWER@|\L$@|" \
 	    -e "s|@APPNAME@|\u$@|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
 	sed -e "s|@ICON@|$(ICONDIR)/ms-$@.png|" settings.json.in > $(BUILDDIR)/$@/settings.json
-	ifeq ($@, "skype")
+	ifeq ($@, skype)
 	    sed -e "s|@CATEGORIES@|Network|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
 	else
 	    sed -e "s|@CATEGORIES@|Office|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
