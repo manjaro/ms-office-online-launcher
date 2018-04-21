@@ -6,8 +6,10 @@ try:
 except Exception as err:
     print("Ops something went wrong: " + str(err))
 
-import os, subprocess 
+import os, subprocess
 from gi.repository import Gtk, WebKit2
+
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 def same_frame():
     # open url in same window
@@ -29,7 +31,7 @@ class applicationWindow(AppWindow):
             """
 
             def check_Link(url):
-                
+
                 if url.startswith(same_frame()):
                       self.webview.load_uri(url)
 
