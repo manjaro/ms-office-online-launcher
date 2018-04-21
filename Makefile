@@ -11,9 +11,9 @@ $(APPS):
 	    -e "s|@APPNAME@|\u$@|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
 	sed -e "s|@ICON@|$(ICONDIR)/ms-$@.png|" settings.json.in > $(BUILDDIR)/$@/settings.json
 	if [[ "$@" == "skype" ]]; then \
-	    sed -e "s|@CATEGORIES@|Network|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop ; \
+	    sed -i -e "s|@CATEGORIES@|Network|" $(BUILDDIR)/$@/$@.desktop ; \
 	else \
-	    sed -e "s|@CATEGORIES@|Office|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop ; \
+	    sed -i -e "s|@CATEGORIES@|Office|" $(BUILDDIR)/$@/$@.desktop ; \
 	fi
 
 build: $(APPS)
