@@ -6,9 +6,8 @@ try:
 except Exception as err:
     print("Ops something went wrong: " + str(err))
 
-import os, subprocess
-from gi.repository import Gtk, WebKit2
-
+import os
+from gi.repository import Gtk, WebKit2, GLib
 
 def same_frame():
     # open url in same window
@@ -30,15 +29,26 @@ class applicationWindow(AppWindow):
             """
 
             def check_Link(url):
-
+                
                 if url.startswith(same_frame()):
                       self.webview.load_uri(url)
-
+          
                 else:
-                    # use existing office settings.json
-                    os.chdir("/usr/share/ms-office/msoffice/")
+                    if url.startswith(("https://people.live", "https://outlook", "https://calendar.live")):
+                       os.chdir("/usr/share/ms-office/outlook/")
+                    
+                    elif url.startswith("https://www.onenote"):
+                       os.chdir("/usr/share/ms-office/onenote/")
+                    
+                    elif url.startswith("https://web.skype"):
+                       os.chdir("/usr/share/ms-office/skype/")
+
+                    else:
+                       # use default settings file
+                       os.chdir("/usr/share/ms-office/msoffice/")
+                
                     # open url in a new window
-                    subprocess.call(["jak", url])
+                    GLib.spawn_command_line_async("jak " + url)
 
             if decision_type == WebKit2.PolicyDecisionType.NEW_WINDOW_ACTION:
                 url = decision.get_navigation_action().get_request().get_uri()
