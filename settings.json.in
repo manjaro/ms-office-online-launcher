@@ -15,19 +15,9 @@
 		"user_agent": "",
 		"site_quirks": true,
 		"same_frame": [
-			"https://calendar.live.com",
-			"https://d.docs.live.net",
-			"https://flow.microsoft.com",
 			"https://office.live.com",
 			"https://office365.com",
-			"https://outlook.live.com",
-			"https://people.live.com",
-			"https://r4.res.office365.com",
-			"https://secure.aadcdn.microsoftonline-p.com",
-			"https://web.skype.com",
-			"https://www.office.com",
-			"https://www.onenote.com",
-			"https://www.sway.com"
+			"https://www.office.com"
 		]
 	}
 }
