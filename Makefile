@@ -1,20 +1,16 @@
 PREFIX ?= /usr/local
 BUILDDIR = build
-ICONDIR = $(PREFIX)/share/icons
+ICONDIR = $(PREFIX)/share/pixmaps
 APPS = office word excel onenote outlook powerpoint skype
 
 all: build
 
 $(APPS):
 	mkdir -p $(BUILDDIR)/$@
-	sed -e "s|@APPNAMELOWER@|\L$@|" \
-	    -e "s|@APPNAME@|\u$@|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
+	sed -e "s|@APPNAME@|\u$@|" \
+	    -e "s|@APPNAMELOWER@|\L$@|" \
+	    -e "s|@CATEGORIES@|Office|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
 	sed -e "s|@ICON@|$(ICONDIR)/ms-$@.png|" settings.json.in > $(BUILDDIR)/$@/settings.json
-	if [[ "$@" == "skype" ]]; then \
-	    sed -i -e "s|@CATEGORIES@|Network|" $(BUILDDIR)/$@/$@.desktop ; \
-	else \
-	    sed -i -e "s|@CATEGORIES@|Office|" $(BUILDDIR)/$@/$@.desktop ; \
-	fi
 
 build: $(APPS)
 	sed -i "s|@URL@|https://www.office.com/login?es=Click\&ru=%2F|" $(BUILDDIR)/office/settings.json
@@ -24,6 +20,7 @@ build: $(APPS)
 	sed -i "s|@URL@|https://outlook.live.com/owa|" $(BUILDDIR)/outlook/settings.json
 	sed -i "s|@URL@|https://office.live.com/start/PowerPoint.aspx|" $(BUILDDIR)/powerpoint/settings.json
 	sed -i "s|@URL@|https://web.skype.com|" $(BUILDDIR)/skype/settings.json
+	sed -i "s|Categories=Office|Categories=Network|" $(BUILDDIR)/skype/skype.desktop
 
 install: build
 	install -dm755 $(DESTDIR)$(PREFIX)/bin $(DESTDIR)$(PREFIX)/share/ms-office
