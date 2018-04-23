@@ -34,7 +34,7 @@ class applicationWindow(AppWindow):
                       self.webview.load_uri(url)
           
                 else:
-                    if url.startswith(("https://people.live", "https://outlook", "https://calendar.live")):
+                    if url.startswith(("https://people", "https://outlook", "https://calendar")):
                        os.chdir("/usr/share/ms-office/outlook/")
                     
                     elif url.startswith("https://www.onenote"):
