@@ -11,7 +11,7 @@ $(APPS):
 	    -e "s|@APPNAMELOWER@|\L$@|" \
 	    -e "s|@CATEGORIES@|Office|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
 	sed -e "s|@ICON@|$(ICONDIR)/ms-$@.png|" settings.json.in > $(BUILDDIR)/$@/settings.json
-	sed -i "s|@PREFIX@|$(PREFIX)|" ms-office-online.in > $(BUILDDIR)/$@/ms-office-online
+	sed -e "s|@PREFIX@|$(PREFIX)|" ms-office-online.in > $(BUILDDIR)/$@/ms-office-online
 
 build: $(APPS)
 	sed -i "s|@URL@|https://www.office.com/login?es=Click\&ru=%2F|" $(BUILDDIR)/office/settings.json
