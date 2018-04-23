@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!@PREFIX@/bin/env python3
 # coding: utf-8
 try:
     from j.AK import Api, AppWindow, settings
@@ -35,17 +35,17 @@ class applicationWindow(AppWindow):
           
                 else:
                     if url.startswith(("https://people", "https://outlook", "https://calendar")):
-                       os.chdir("/usr/share/ms-office/outlook/")
+                       os.chdir("@PREFIX@/share/ms-office/outlook/")
                     
                     elif url.startswith("https://www.onenote"):
-                       os.chdir("/usr/share/ms-office/onenote/")
+                       os.chdir("@PREFIX@/share/ms-office/onenote/")
                     
                     elif url.startswith("https://web.skype"):
-                       os.chdir("/usr/share/ms-office/skype/")
+                       os.chdir("@PREFIX@/share/ms-office/skype/")
 
                     else:
                        # use default settings file
-                       os.chdir("/usr/share/ms-office/office/")
+                       os.chdir("@PREFIX@/share/ms-office/office/")
                 
                     # open url in a new window
                     GLib.spawn_command_line_async("jak " + url)

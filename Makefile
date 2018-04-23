@@ -1,4 +1,4 @@
-PREFIX ?= /usr
+PREFIX ?= /usr/local
 BUILDDIR = build
 ICONDIR = $(PREFIX)/share/pixmaps
 APPS = office word excel onenote outlook powerpoint skype
@@ -11,6 +11,7 @@ $(APPS):
 	    -e "s|@APPNAMELOWER@|\L$@|" \
 	    -e "s|@CATEGORIES@|Office|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
 	sed -e "s|@ICON@|$(ICONDIR)/ms-$@.png|" settings.json.in > $(BUILDDIR)/$@/settings.json
+	sed -i "s|@PREFIX@|$(PREFIX)|" ms-office-online.in > $(BUILDDIR)/$@/ms-office-online
 
 build: $(APPS)
 	sed -i "s|@URL@|https://www.office.com/login?es=Click\&ru=%2F|" $(BUILDDIR)/office/settings.json
@@ -27,7 +28,7 @@ install: build
 	for app in $(APPS); do \
 		install -Dm644 icons/$$app.png \
 			$(DESTDIR)$(ICONDIR)/ms-$$app.png ; \
-		install -Dm755 ms-office-online \
+		install -Dm755 $(BUILDDIR)/$$app/ms-office-online \
 			$(DESTDIR)$(PREFIX)/share/ms-office/$$app/ms-office-online ; \
 		ln -sf $(PREFIX)/share/ms-office/$$app/ms-office-online \
 			$(DESTDIR)$(PREFIX)/bin/ms-$$app ; \
