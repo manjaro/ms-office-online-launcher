@@ -1,4 +1,4 @@
-PREFIX ?= /usr/local
+PREFIX ?= /usr
 BUILDDIR = build
 ICONDIR = $(PREFIX)/share/pixmaps
 APPS = office word excel onenote outlook powerpoint skype

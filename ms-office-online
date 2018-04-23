@@ -45,7 +45,7 @@ class applicationWindow(AppWindow):
 
                     else:
                        # use default settings file
-                       os.chdir("/usr/share/ms-office/msoffice/")
+                       os.chdir("/usr/share/ms-office/office/")
                 
                     # open url in a new window
                     GLib.spawn_command_line_async("jak " + url)
