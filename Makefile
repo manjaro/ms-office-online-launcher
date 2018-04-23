@@ -30,8 +30,9 @@ install: build
 			$(DESTDIR)$(ICONDIR)/ms-$$app.png ; \
 		install -Dm755 $(BUILDDIR)/$$app/ms-office-online \
 			$(DESTDIR)$(PREFIX)/share/ms-office/$$app/ms-office-online ; \
-		ln -sf $(PREFIX)/share/ms-office/$$app/ms-office-online \
-			$(DESTDIR)$(PREFIX)/bin/ms-$$app ; \
+		echo "#!/bin/sh" > "$(DESTDIR)$(PREFIX)/bin/ms-$$app" ; \
+		echo "cd $(PREFIX)/share/ms-office/$$app" >> "$(DESTDIR)$(PREFIX)/bin/ms-$$app" ; \
+		echo "./ms-office-online" >> "$(DESTDIR)$(PREFIX)/bin/ms-$$app" ; \
 		install -Dm644 $(BUILDDIR)/$$app/settings.json \
 			$(DESTDIR)$(PREFIX)/share/ms-office/$$app/settings.json ; \
 		install -Dm644 $(BUILDDIR)/$$app/$$app.desktop \
