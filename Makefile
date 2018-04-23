@@ -16,13 +16,13 @@ $(APPS):
 build: $(APPS)
         # Office
 	sed -i "s|@URL@|https://www.office.com/login?es=Click\&ru=%2F|" $(BUILDDIR)/office/settings.json
-        sed -i "s|@DOMAINS@|'https://office.live.com/', 'https://www.office.com'|" $(BUILDDIR)/office/settings.json
+        sed -i "s|@DOMAINS@|'https://office.live.com', 'https://www.office.com'|" $(BUILDDIR)/office/settings.json
         # Word
 	sed -i "s|@URL@|https://office.live.com/start/Word.aspx|" $(BUILDDIR)/word/settings.json
-        sed -i "s|@DOMAINS@|'https://office.live.com/', 'https://www.office.com'|" $(BUILDDIR)/word/settings.json
+        sed -i "s|@DOMAINS@|'https://office.live.com', 'https://www.office.com'|" $(BUILDDIR)/word/settings.json
         # Excel
 	sed -i "s|@URL@|https://office.live.com/start/Excel.aspx|" $(BUILDDIR)/excel/settings.json
-        sed -i "s|@DOMAINS@|'https://office.live.com/', 'https://www.office.com'|" $(BUILDDIR)/excel/settings.json
+        sed -i "s|@DOMAINS@|'https://office.live.com', 'https://www.office.com'|" $(BUILDDIR)/excel/settings.json
         # OneNote
 	sed -i "s|@URL@|https://www.onenote.com/notebooks|" $(BUILDDIR)/onenote/settings.json
         # OutLook
@@ -32,7 +32,7 @@ build: $(APPS)
         sed -i "s|@AGENT@|Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14|" $(BUILDDIR)/outlook/settings.json
         # PowerPoint
 	sed -i "s|@URL@|https://office.live.com/start/PowerPoint.aspx|" $(BUILDDIR)/powerpoint/settings.json
-        sed -i "s|@DOMAINS@|'https://office.live.com/', 'https://www.office.com'|" $(BUILDDIR)/powerpoint/settings.json
+        sed -i "s|@DOMAINS@|'https://office.live.com', 'https://www.office.com'|" $(BUILDDIR)/powerpoint/settings.json
         # Skype
 	sed -i "s|@URL@|https://web.skype.com|" $(BUILDDIR)/skype/settings.json
 	sed -i "s|Categories=Office|Categories=Network|" $(BUILDDIR)/skype/skype.desktop
