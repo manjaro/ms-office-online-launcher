@@ -1,0 +1,3 @@
+#!/bin/sh
+cd @PREFIX@/share/ms-office-online/@APPNAMELOWER@
+./ms-@APPNAMELOWER@-online
