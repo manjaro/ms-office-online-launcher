@@ -35,17 +35,17 @@ class applicationWindow(AppWindow):
 
                 else:
                     if url.startswith(("https://people", "https://outlook", "https://calendar")):
-                       os.chdir("@PREFIX@/share/ms-office/outlook/")
+                       os.chdir("@PREFIX@/share/ms-office-online/outlook/")
 
                     elif url.startswith("https://www.onenote"):
-                       os.chdir("@PREFIX@/share/ms-office/onenote/")
+                       os.chdir("@PREFIX@/share/ms-office-online/onenote/")
 
                     elif url.startswith("https://web.skype"):
-                       os.chdir("@PREFIX@/share/ms-office/skype/")
+                       os.chdir("@PREFIX@/share/ms-office-online/skype/")
 
                     else:
                        # use default settings file
-                       os.chdir("@PREFIX@/share/ms-office/office/")
+                       os.chdir("@PREFIX@/share/ms-office-online/office/")
 
                     # open url in a new window
                     GLib.spawn_command_line_async("jak " + url)
