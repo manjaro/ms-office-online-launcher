@@ -1,55 +1,67 @@
 PREFIX ?= /usr/local
 BUILDDIR = build
 ICONDIR = $(PREFIX)/share/pixmaps
+
 APPS = office word excel onenote outlook powerpoint skype
+APPS2 = office2 word2 excel2 onenote2 outlook2 powerpoint2 skype2
+OFFICEDOMAINS = \"https://office.live.com\", \"https://www.office.com\"
+CATEGORY ?= Office
 
 all: build
 
 $(APPS):
 	mkdir -p $(BUILDDIR)/$@
-	sed -e "s|@APPNAME@|\u$@|" \
-	    -e "s|@APPNAMELOWER@|\L$@|" \
-	    -e "s|@CATEGORIES@|Office|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
-	sed -e "s|@ICON@|$(ICONDIR)/ms-$@.png|" settings.json.in > $(BUILDDIR)/$@/settings.json
-	sed -e "s|@PREFIX@|$(PREFIX)|" ms-office-online.in > $(BUILDDIR)/$@/ms-office-online
+	sed "s|@APPNAME@|\u$@|; \
+	     s|@APPNAMELOWER@|\L$@|; \
+	     s|@CATEGORY@|$(CATEGORY)|" launcher.desktop.in > $(BUILDDIR)/$@/$@.desktop
+	sed "s|@ICON@|$(ICONDIR)/ms-$@.png|; \
+	     s|@URL@|$(URL)|; \
+	     s|@DOMAINS@|$(DOMAINS)|; \
+	     s|@UA@|$(UA)|" settings.json.in > $(BUILDDIR)/$@/settings.json
+	sed "s|@PREFIX@|$(PREFIX)|; \
+	     s|@APPNAMELOWER@|\L$@|" launcher.sh.in > $(BUILDDIR)/$@/ms-$@
 
-build: $(APPS)
-        # Office
-	sed -i "s|@URL@|https://www.office.com/login?es=Click\&ru=%2F|" $(BUILDDIR)/office/settings.json
-        sed -i "s|@DOMAINS@|'https://office.live.com', 'https://www.office.com'|" $(BUILDDIR)/office/settings.json
-        # Word
-	sed -i "s|@URL@|https://office.live.com/start/Word.aspx|" $(BUILDDIR)/word/settings.json
-        sed -i "s|@DOMAINS@|'https://office.live.com', 'https://www.office.com'|" $(BUILDDIR)/word/settings.json
-        # Excel
-	sed -i "s|@URL@|https://office.live.com/start/Excel.aspx|" $(BUILDDIR)/excel/settings.json
-        sed -i "s|@DOMAINS@|'https://office.live.com', 'https://www.office.com'|" $(BUILDDIR)/excel/settings.json
-        # OneNote
-	sed -i "s|@URL@|https://www.onenote.com/notebooks|" $(BUILDDIR)/onenote/settings.json
-        # OutLook
-	sed -i "s|@URL@|https://outlook.live.com/owa|" $(BUILDDIR)/outlook/settings.json
-        sed -i "s|@DOMAINS@|'https://people.live.com', 'https://calendar.live.com'|" $(BUILDDIR)/outlook/settings.json
-        # Force new user interface
-        sed -i "s|@AGENT@|Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14|" $(BUILDDIR)/outlook/settings.json
-        # PowerPoint
-	sed -i "s|@URL@|https://office.live.com/start/PowerPoint.aspx|" $(BUILDDIR)/powerpoint/settings.json
-        sed -i "s|@DOMAINS@|'https://office.live.com', 'https://www.office.com'|" $(BUILDDIR)/powerpoint/settings.json
-        # Skype
-	sed -i "s|@URL@|https://web.skype.com|" $(BUILDDIR)/skype/settings.json
-	sed -i "s|Categories=Office|Categories=Network|" $(BUILDDIR)/skype/skype.desktop
+office2: URL = https://www.office.com/login?es=Click\&ru=%2F
+office2: DOMAINS = $(OFFICEDOMAINS)
+office2: office
+
+word2: URL = https://office.live.com/start/Word.aspx
+word2: DOMAINS = $(OFFICEDOMAINS)
+word2: word
+
+excel2: URL = https://office.live.com/start/Excel.aspx
+excel2: DOMAINS = $(OFFICEDOMAINS)
+excel2: excel
+
+onenote2: URL = https://www.onenote.com/notebooks
+onenote2: onenote
+
+outlook2: URL = https://outlook.live.com/owa
+outlook2: DOMAINS = \"https://people.live.com\", \"https://calendar.live.com\"
+outlook2: UA = Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14
+outlook2: outlook
+
+powerpoint2: URL = https://office.live.com/start/PowerPoint.aspx
+powerpoint2: DOMAINS = $(OFFICEDOMAINS)
+powerpoint2: powerpoint
+
+skype2: URL = https://web.skype.com
+skype2: CATEGORY = Network
+skype2: skype
+
+build: $(APPS2)
+	sed "s|@PREFIX@|$(PREFIX)|" ms-office-online.in > $(BUILDDIR)/ms-office-online
 
 install: build
-	install -dm755 $(DESTDIR)$(PREFIX)/bin $(DESTDIR)$(PREFIX)/share/ms-office
 	for app in $(APPS); do \
 		install -Dm644 icons/$$app.png \
 			$(DESTDIR)$(ICONDIR)/ms-$$app.png ; \
-		install -Dm755 $(BUILDDIR)/$$app/ms-office-online \
-			$(DESTDIR)$(PREFIX)/share/ms-office/$$app/ms-office-online ; \
-		echo "#!/bin/sh" > "$(DESTDIR)$(PREFIX)/bin/ms-$$app" ; \
-		echo "cd $(PREFIX)/share/ms-office/$$app" >> "$(DESTDIR)$(PREFIX)/bin/ms-$$app" ; \
-		echo "./ms-office-online" >> "$(DESTDIR)$(PREFIX)/bin/ms-$$app" ; \
-		chmod a+x "$(DESTDIR)$(PREFIX)/bin/ms-$$app" ; \
+		install -Dm755 $(BUILDDIR)/ms-office-online \
+			$(DESTDIR)$(PREFIX)/share/ms-office-online/$$app/ms-$$app-online ; \
+		install -Dm755 $(BUILDDIR)/$$app/ms-$$app \
+			$(DESTDIR)$(PREFIX)/bin/ms-$$app ; \
 		install -Dm644 $(BUILDDIR)/$$app/settings.json \
-			$(DESTDIR)$(PREFIX)/share/ms-office/$$app/settings.json ; \
+			$(DESTDIR)$(PREFIX)/share/ms-office-online/$$app/settings.json ; \
 		install -Dm644 $(BUILDDIR)/$$app/$$app.desktop \
 			$(DESTDIR)$(PREFIX)/share/applications/ms-$$app.desktop ; \
 	done
@@ -57,4 +69,4 @@ install: build
 clean:
 	rm -fr $(BUILDDIR)
 
-.PHONY: build install clean $(APPS)
+.PHONY: build install clean $(APPS) $(APPS2)

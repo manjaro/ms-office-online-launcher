@@ -12,7 +12,7 @@
 	"webkit": {
 		"cache": "online",
 		"context_menu": true,
-		"user_agent": "@AGENT@",
+		"user_agent": "@UA@",
 		"site_quirks": true,
 		"same_frame": [@DOMAINS@]
 	}
