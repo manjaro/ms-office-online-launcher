@@ -3,6 +3,7 @@
 
 [![GitHub release](https://img.shields.io/github/release/manjaro/ms-office-online-launcher.svg)](https://github.com/manjaro/ms-office-online-launcher/releases)
 [![GitHub license](https://img.shields.io/github/license/manjaro/ms-office-online-launcher.svg)](https://github.com/manjaro/ms-office-online-launcher/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/manjaro/ms-office-online-launcher.svg)](https://github.com/manjaro/ms-office-online-launcher/blob/master/icons/LICENSE)
 
 | [Report a Bug](https://github.com/manjaro/ms-office-online-launcher/issues/new) | [Report a Bug for JAK](https://github.com/codesardine/Jade-Application-Kit/issues/new)
 |:-----------------------------------------:|:-----------------------------------------:|
@@ -21,4 +22,4 @@ See [PKGBUILD](https://github.com/manjaro/packages-community/raw/master/ms-offic
 
 ### Icons
 
-©2015-2018 BlackVariant - Button-UI-2.0: Microsoft Office 2016 Extras
+©2018 Manjaro Artwork Team (Muser)
