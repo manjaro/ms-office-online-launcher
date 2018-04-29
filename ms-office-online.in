@@ -9,17 +9,20 @@ except Exception as err:
 import os
 from gi.repository import Gtk, WebKit2, GLib
 
+
 def same_frame():
     # open url in same window
     return tuple(settings("webkit", "same_frame"))
 
-class applicationWindow(AppWindow):
+
+class OfficeWindow(AppWindow):
     """
     extends AK.AppWindow functionality
     """
 
     def __init__(self):
-        super(applicationWindow, self).__init__()
+        super(OfficeWindow, self).__init__()
+
         def on_decide_policy(webview, decision, decision_type):
             """
             :param webview:
@@ -28,36 +31,44 @@ class applicationWindow(AppWindow):
             :return: if is not a predicted url open in separate window.
             """
 
-            def check_Link(url):
+            def default_settings():
+                # use default settings file
+                os.chdir("@PREFIX@/share/ms-office-online/office/")
 
-                if url.startswith(same_frame()):
-                      self.webview.load_uri(url)
-
-                else:
-                    if url.startswith(("https://people", "https://outlook", "https://calendar")):
-                       os.chdir("@PREFIX@/share/ms-office-online/outlook/")
-
-                    elif url.startswith("https://www.onenote"):
-                       os.chdir("@PREFIX@/share/ms-office-online/onenote/")
-
-                    elif url.startswith("https://web.skype"):
-                       os.chdir("@PREFIX@/share/ms-office-online/skype/")
-
-                    else:
-                       # use default settings file
-                       os.chdir("@PREFIX@/share/ms-office-online/office/")
-
-                    # open url in a new window
-                    GLib.spawn_command_line_async("jak " + url)
+            def launch(url):
+                GLib.spawn_command_line_async("jak " + url)
 
             if decision_type == WebKit2.PolicyDecisionType.NEW_WINDOW_ACTION:
                 url = decision.get_navigation_action().get_request().get_uri()
-                check_Link(url)
+                if url.startswith(same_frame()):
+                    self.webview.load_uri(url)
 
+                else:
+                    if url.startswith(("https://people", "https://outlook", "https://calendar")):
+                        os.chdir("@PREFIX@/share/ms-office-online/outlook/")
+
+                    elif url.startswith("https://www.onenote"):
+                        os.chdir("@PREFIX@/share/ms-office-online/onenote/")
+
+                    elif url.startswith("https://web.skype"):
+                        os.chdir("@PREFIX@/share/ms-office-online/skype/")
+
+                    else:
+                        default_settings()
+
+                    launch(url)
+
+            elif decision_type == WebKit2.PolicyDecisionType.NAVIGATION_ACTION:
+                url = decision.get_navigation_action().get_request().get_uri()
+                if url.startswith("https://account"):
+                    default_settings()
+                    launch(url)
+                    decision.ignore()
+                    return True
 
         self.webview.load_uri(settings("app", "route"))
         self.webview.connect("decide-policy", on_decide_policy)
 
 
-applicationWindow()
+OfficeWindow()
 Gtk.main()
